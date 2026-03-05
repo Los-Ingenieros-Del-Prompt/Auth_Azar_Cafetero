@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
-// ✅ Implementa TokenGeneratorPort (antes implementaba JwtTokenPort que no existe)
+
 public class JwtTokenAdapter implements TokenGeneratorPort {
 
-    // ✅ Secreto y expiración inyectados desde application.properties
+
     private final String secret;
     private final long expirationMs;
 
@@ -27,7 +27,6 @@ public class JwtTokenAdapter implements TokenGeneratorPort {
     }
 
     @Override
-    // ✅ Método generateToken() coincide exactamente con el puerto TokenGeneratorPort
     public String generateToken(User user) {
         return Jwts.builder()
                 .setSubject(user.getId().toString())
