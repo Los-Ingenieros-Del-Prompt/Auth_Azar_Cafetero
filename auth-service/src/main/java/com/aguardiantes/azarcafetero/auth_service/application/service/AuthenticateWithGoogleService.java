@@ -2,13 +2,14 @@ package com.aguardiantes.azarcafetero.auth_service.application.service;
 
 import com.aguardiantes.azarcafetero.auth_service.application.dto.AuthenticationResponse;
 import com.aguardiantes.azarcafetero.auth_service.application.port.in.AuthenticateWithGoogleUseCase;
-import com.aguardiantes.azarcafetero.auth_service.domain.model.GoogleUserData;
+import com.aguardiantes.azarcafetero.auth_service.application.dto.GoogleUserData;
+import com.aguardiantes.azarcafetero.auth_service.application.port.out.TokenGeneratorPort;
+import com.aguardiantes.azarcafetero.auth_service.application.port.out.UserRepositoryPort;
 import com.aguardiantes.azarcafetero.auth_service.domain.model.User;
 import com.aguardiantes.azarcafetero.auth_service.domain.model.value.Email;
 import com.aguardiantes.azarcafetero.auth_service.domain.model.value.GoogleId;
-import com.aguardiantes.azarcafetero.auth_service.domain.port.out.GoogleAuthPort;
-import com.aguardiantes.azarcafetero.auth_service.domain.port.out.TokenGeneratorPort;
-import com.aguardiantes.azarcafetero.auth_service.domain.port.out.UserRepositoryPort;
+import com.aguardiantes.azarcafetero.auth_service.application.port.out.GoogleAuthPort;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -2,6 +2,7 @@ package com.aguardiantes.azarcafetero.auth_service.infrastructure.web;
 
 import com.aguardiantes.azarcafetero.auth_service.application.dto.AuthenticationResponse;
 import com.aguardiantes.azarcafetero.auth_service.application.port.in.AuthenticateWithGoogleUseCase;
+import com.aguardiantes.azarcafetero.auth_service.infrastructure.web.dto.GoogleAuthRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
