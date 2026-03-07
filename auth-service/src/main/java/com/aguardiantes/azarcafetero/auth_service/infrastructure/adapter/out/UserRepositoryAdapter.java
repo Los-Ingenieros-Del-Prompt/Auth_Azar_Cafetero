@@ -1,8 +1,8 @@
-package com.aguardiantes.azarcafetero.auth_service.infrastructure.adapter;
+package com.aguardiantes.azarcafetero.auth_service.infrastructure.adapter.out;
 
 import com.aguardiantes.azarcafetero.auth_service.domain.model.User;
 import com.aguardiantes.azarcafetero.auth_service.domain.model.value.GoogleId;
-import com.aguardiantes.azarcafetero.auth_service.domain.port.out.UserRepositoryPort;
+import com.aguardiantes.azarcafetero.auth_service.application.port.out.UserRepositoryPort;
 import com.aguardiantes.azarcafetero.auth_service.infrastructure.persistence.JpaUserRepository;
 import com.aguardiantes.azarcafetero.auth_service.infrastructure.persistence.UserJpaEntity;
 import com.aguardiantes.azarcafetero.auth_service.infrastructure.persistence.UserMapper;

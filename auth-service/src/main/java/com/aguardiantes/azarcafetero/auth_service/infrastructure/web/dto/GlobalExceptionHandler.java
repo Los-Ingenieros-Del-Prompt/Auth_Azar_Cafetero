@@ -1,7 +1,8 @@
-package com.aguardiantes.azarcafetero.auth_service.infrastructure.web;
+package com.aguardiantes.azarcafetero.auth_service.infrastructure.web.dto;
 
 import com.aguardiantes.azarcafetero.auth_service.domain.exception.GoogleAuthorizationDeniedException;
 import com.aguardiantes.azarcafetero.auth_service.domain.exception.InvalidGoogleTokenException;
+import com.aguardiantes.azarcafetero.auth_service.infrastructure.web.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

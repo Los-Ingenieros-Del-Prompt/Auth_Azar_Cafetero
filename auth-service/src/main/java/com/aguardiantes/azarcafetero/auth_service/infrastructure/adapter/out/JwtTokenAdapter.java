@@ -1,7 +1,7 @@
-package com.aguardiantes.azarcafetero.auth_service.infrastructure.adapter;
+package com.aguardiantes.azarcafetero.auth_service.infrastructure.adapter.out;
 
 import com.aguardiantes.azarcafetero.auth_service.domain.model.User;
-import com.aguardiantes.azarcafetero.auth_service.domain.port.out.TokenGeneratorPort; // ✅ Puerto correcto
+import com.aguardiantes.azarcafetero.auth_service.application.port.out.TokenGeneratorPort;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;

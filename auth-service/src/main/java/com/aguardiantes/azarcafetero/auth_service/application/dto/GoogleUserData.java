@@ -1,4 +1,4 @@
-package com.aguardiantes.azarcafetero.auth_service.domain.model;
+package com.aguardiantes.azarcafetero.auth_service.application.dto;
 
 
 public class GoogleUserData {

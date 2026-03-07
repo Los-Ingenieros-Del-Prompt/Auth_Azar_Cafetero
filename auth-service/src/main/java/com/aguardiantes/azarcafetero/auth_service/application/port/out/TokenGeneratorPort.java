@@ -1,4 +1,4 @@
-package com.aguardiantes.azarcafetero.auth_service.domain.port.out;
+package com.aguardiantes.azarcafetero.auth_service.application.port.out;
 
 import com.aguardiantes.azarcafetero.auth_service.domain.model.User;
 

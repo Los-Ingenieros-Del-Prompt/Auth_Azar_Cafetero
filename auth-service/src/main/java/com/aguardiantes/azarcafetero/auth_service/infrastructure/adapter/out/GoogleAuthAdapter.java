@@ -1,9 +1,9 @@
-package com.aguardiantes.azarcafetero.auth_service.infrastructure.adapter;
+package com.aguardiantes.azarcafetero.auth_service.infrastructure.adapter.out;
 
-import com.aguardiantes.azarcafetero.auth_service.domain.model.GoogleUserData;
+import com.aguardiantes.azarcafetero.auth_service.application.dto.GoogleUserData;
 import com.aguardiantes.azarcafetero.auth_service.domain.exception.GoogleAuthorizationDeniedException;
 import com.aguardiantes.azarcafetero.auth_service.domain.exception.InvalidGoogleTokenException;
-import com.aguardiantes.azarcafetero.auth_service.domain.port.out.GoogleAuthPort;
+import com.aguardiantes.azarcafetero.auth_service.application.port.out.GoogleAuthPort;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
