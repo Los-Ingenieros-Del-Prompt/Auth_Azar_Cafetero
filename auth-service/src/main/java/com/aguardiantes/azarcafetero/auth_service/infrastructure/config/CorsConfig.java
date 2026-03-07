@@ -1,5 +1,7 @@
 package com.aguardiantes.azarcafetero.auth_service.infrastructure.config;
 
+import com.aguardiantes.azarcafetero.auth_service.infrastructure.security.JwtAuthFilter;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -19,5 +21,13 @@ public class CorsConfig {
                         .allowedHeaders("*");
             }
         };
+    }
+
+    @Bean
+    public FilterRegistrationBean<JwtAuthFilter> jwtFilter(JwtAuthFilter filter) {
+        FilterRegistrationBean<JwtAuthFilter> registration = new FilterRegistrationBean<>(filter);
+        registration.addUrlPatterns("/*");  // aplica a todo
+        registration.setOrder(1);
+        return registration;
     }
 }
