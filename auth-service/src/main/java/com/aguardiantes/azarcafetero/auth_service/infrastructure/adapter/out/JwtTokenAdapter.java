@@ -29,7 +29,7 @@ public class JwtTokenAdapter implements TokenGeneratorPort {
     @Override
     public String generateToken(User user) {
         return Jwts.builder()
-                .setSubject(user.getId().toString())
+                .setSubject(user.getEmail().value())
                 .claim("email", user.getEmail().value())
                 .claim("name", user.getName())
                 .setIssuedAt(new Date())
