@@ -32,6 +32,7 @@ public class JwtTokenAdapter implements TokenGeneratorPort {
                 .setSubject(user.getEmail().value())
                 .claim("email", user.getEmail().value())
                 .claim("name", user.getName())
+                .claim("avatarUrl", user.getAvatarUrl())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes()), SignatureAlgorithm.HS256)
