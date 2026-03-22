@@ -28,20 +28,11 @@ jobs:
       - name: Deploy en EC2
         uses: appleboy/ssh-action@v1
         with:
-          host: 3.21.163.196
+          host: ${{ secrets.EC2_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/azar-auth:latest
             docker stop azar-auth || true
             docker rm azar-auth || true
-            docker run -d \
-              --name azar-auth \
-              --restart unless-stopped \
-              -p 8081:8081 \
-              -e DB_URL=${{ secrets.DB_URL }} \
-              -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
-              -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
-              -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
-              -e GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} \
-              ${{ secrets.DOCKERHUB_USERNAME }}/azar-auth:latest
+            docker run -d --name azar-auth --restart unless-stopped -p 8081:8081 -e DB_URL="${{ secrets.DB_URL }}" -e DB_USERNAME="${{ secrets.DB_USERNAME }}" -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" -e JWT_SECRET="${{ secrets.JWT_SECRET }}" -e GOOGLE_CLIENT_ID="${{ secrets.GOOGLE_CLIENT_ID }}" ${{ secrets.DOCKERHUB_USERNAME }}/azar-auth:latest
