@@ -1,6 +1,5 @@
 package com.aguardiantes.azarcafetero.auth_service.infrastructure.web;
 
-
 import com.aguardiantes.azarcafetero.auth_service.application.dto.AuthenticationResponse;
 import com.aguardiantes.azarcafetero.auth_service.application.port.in.AuthenticateWithGoogleUseCase;
 import com.aguardiantes.azarcafetero.auth_service.infrastructure.web.dto.GoogleAuthRequest;
@@ -28,12 +27,12 @@ class AuthControllerTest {
         String idToken = "fake-google-token";
         GoogleAuthRequest request = new GoogleAuthRequest(idToken);
 
-        // CORRECCIÓN: pasar los 4 argumentos al constructor
         AuthenticationResponse mockResponse = new AuthenticationResponse(
-                "jwt-token",         // token
-                "Test User",         // name
-                "https://avatar.url/test.png", // avatarUrl
-                true                 // isNewUser
+                "jwt-token",
+                "test@example.com",     
+                "Test User",
+                "https://avatar.url/test.png",
+                true
         );
 
         when(useCase.authenticate(idToken)).thenReturn(mockResponse);
@@ -50,9 +49,9 @@ class AuthControllerTest {
         String idToken = "another-fake-token";
         GoogleAuthRequest request = new GoogleAuthRequest(idToken);
 
-        // CORRECCIÓN: pasar los 4 argumentos
         AuthenticationResponse mockResponse = new AuthenticationResponse(
                 "jwt-token-2",
+                "another@example.com", 
                 "Another User",
                 "https://avatar.url/another.png",
                 false
