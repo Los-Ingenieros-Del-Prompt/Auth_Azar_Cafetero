@@ -46,14 +46,12 @@ jobs:
             docker logs azar-auth --tail 20
             echo "=== IMAGE ==="
             docker inspect azar-auth --format='{{.Config.Image}}'
-      - name: Test Auth directo
+      - name: Debug Auth
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            curl -s http://127.0.0.1:8081/auth/google \
-              -X POST \
-              -H "Content-Type: application/json" \
-              -d '{"idToken":"test"}' | head -c 500
+            docker ps
+            docker logs azar-auth --tail 30
