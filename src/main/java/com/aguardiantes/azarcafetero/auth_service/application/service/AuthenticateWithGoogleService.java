@@ -70,10 +70,11 @@ public class AuthenticateWithGoogleService implements AuthenticateWithGoogleUseC
 
 
         return new AuthenticationResponse(
-                token,
-                user.getName(),
-                user.getAvatarUrl(),
-                isNewUser
-        );
+            token,
+            user.getEmail().value(),
+            user.getName(),
+            user.getAvatarUrl(),
+            isNewUser
+    );
     }
 }
