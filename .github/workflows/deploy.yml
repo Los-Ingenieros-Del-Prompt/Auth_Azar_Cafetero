@@ -25,25 +25,6 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-<<<<<<< Updated upstream
-          host: 18.219.50.197
-          username: ec2-user
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/azar-auth:latest
-            docker stop azar-auth || true
-            docker rm azar-auth || true
-            docker run -d \
-              --name azar-auth \
-              --restart unless-stopped \
-              -p 8081:8081 \
-              -e DB_URL=${{ secrets.DB_URL }} \
-              -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
-              -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
-              -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
-              -e GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} \
-              ${{ secrets.DOCKERHUB_USERNAME }}/azar-auth:latest
-=======
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
@@ -53,4 +34,3 @@ jobs:
           aws lambda update-function-code \
             --function-name azar-auth-service \
             --zip-file fileb://target/auth-service-0.0.1-SNAPSHOT.jar
->>>>>>> Stashed changes
