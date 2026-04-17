@@ -14,7 +14,7 @@ public class FlywayConfig {
         Flyway flyway = Flyway.configure()
                 .dataSource(dataSource)
                 .locations("classpath:db/migration")
-                .baselineOnMigrate(false)
+                .baselineOnMigrate(true) // no falla si la tabla ya existe en Neon
                 .load();
         flyway.migrate();
         return flyway;
