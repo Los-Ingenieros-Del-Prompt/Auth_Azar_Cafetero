@@ -1,6 +1,5 @@
 package com.aguardiantes.azarcafetero.auth_service.infrastructure.security;
 
-import com.aguardiantes.azarcafetero.auth_service.infrastructure.security.JwtValidatorPort;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,9 +15,9 @@ import java.util.List;
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    // Rutas públicas que NO requieren token
     private static final List<String> PUBLIC_PATHS = List.of(
-            "/auth/google"
+            "/auth/google",
+            "/actuator"
     );
 
     private final JwtValidatorPort jwtValidator;
@@ -35,7 +34,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String path = request.getRequestURI();
 
-        // Dejar pasar rutas públicas
         if (PUBLIC_PATHS.stream().anyMatch(path::startsWith)) {
             chain.doFilter(request, response);
             return;
@@ -55,7 +53,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Inyectar userId en el request para que los controllers lo usen
         String userId = jwtValidator.extractUserId(token);
         request.setAttribute("userId", userId);
 
