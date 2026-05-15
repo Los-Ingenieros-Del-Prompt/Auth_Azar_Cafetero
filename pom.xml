@@ -29,7 +29,7 @@
 	
 	<properties>
 		<java.version>21</java.version>
-		<sonar.organization>azar-cafetero</sonar.organization>
+		<sonar.organization>los-ingenieros-del-prompt</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<sonar.coverage.jacoco.xmlReportPaths>
 			${project.build.directory}/site/jacoco/jacoco.xml
