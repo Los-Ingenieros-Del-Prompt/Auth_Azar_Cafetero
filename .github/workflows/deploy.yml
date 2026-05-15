@@ -10,9 +10,19 @@ env:
   ECS_SERVICE: azar-auth
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+  code-quality:
+    uses: ./.github/workflows/code-quality.yml
+    with:
+      java-version: '21'
+      sonar-project-key: 'azar-cafetero_auth-service'
+      sonar-organization: 'azar-cafetero'
+      coverage-threshold: 80
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+  build-and-deploy:
+    needs: code-quality   # <-- bloquea el deploy si calidad falla
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
