@@ -1,8 +1,13 @@
-name: Build & Deploy Auth
+name: Build & Deploy azar-auth (ECS Fargate)
 
 on:
   push:
     branches: [main]
+
+env:
+  AWS_REGION: us-east-1
+  ECS_CLUSTER: azar-cluster
+  ECS_SERVICE: azar-auth
 
 jobs:
   build-and-deploy:
@@ -18,40 +23,47 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build y Push
+      - name: Build y Push a DockerHub
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/azar-auth:latest
 
-      - name: Deploy en EC2
-        uses: appleboy/ssh-action@v1
+      - name: Configurar credenciales AWS
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ec2-user
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/azar-auth:latest
-            docker stop azar-auth || true
-            docker rm azar-auth || true
-            docker run -d --name azar-auth --restart unless-stopped -p 8081:8081 -e DB_URL="${{ secrets.DB_URL }}" -e DB_USERNAME="${{ secrets.DB_USERNAME }}" -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" -e JWT_SECRET="${{ secrets.JWT_SECRET }}" -e GOOGLE_CLIENT_ID="${{ secrets.GOOGLE_CLIENT_ID }}" ${{ secrets.DOCKERHUB_USERNAME }}/azar-auth:latest
-      - name: Ver logs Auth
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ec2-user
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            docker logs azar-auth --tail 20
-            echo "=== IMAGE ==="
-            docker inspect azar-auth --format='{{.Config.Image}}'
-      - name: Debug Auth
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ec2-user
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            docker ps
-            docker logs azar-auth --tail 30
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Forzar nuevo deploy en ECS
+        run: |
+          aws ecs update-service \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --service ${{ env.ECS_SERVICE }} \
+            --force-new-deployment \
+            --region ${{ env.AWS_REGION }}
+
+      - name: Esperar estabilidad del servicio
+        run: |
+          echo "Esperando a que ECS quede estable..."
+
+          aws ecs wait services-stable \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --services ${{ env.ECS_SERVICE }} \
+            --region ${{ env.AWS_REGION }}
+
+      - name: Verificar tasks activas
+        run: |
+          aws ecs list-tasks \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --service-name ${{ env.ECS_SERVICE }} \
+            --region ${{ env.AWS_REGION }}
+
+      - name: Mostrar eventos recientes
+        run: |
+          aws ecs describe-services \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --services ${{ env.ECS_SERVICE }} \
+            --query "services[0].events[0:5]"
