@@ -6,7 +6,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>4.0.3</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 	<groupId>com.aguardiantes.azarcafetero</groupId>
 	<artifactId>auth-service</artifactId>
@@ -14,19 +14,12 @@
 	<name>auth-service</name>
 	<description>Authentication microservice for Azar Cafetero platform using Google OAuth 2.0</description>
 	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
+	<licenses><license/></licenses>
+	<developers><developer/></developers>
 	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
+		<connection/><developerConnection/><tag/><url/>
 	</scm>
-	
+
 	<properties>
 		<java.version>21</java.version>
 		<sonar.organization>los-ingenieros-del-prompt</sonar.organization>
@@ -35,13 +28,12 @@
 			${project.build.directory}/site/jacoco/jacoco.xml
 		</sonar.coverage.jacoco.xmlReportPaths>
 	</properties>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -79,15 +71,15 @@
 			<artifactId>google-api-client</artifactId>
 			<version>2.2.0</version>
 		</dependency>
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -104,14 +96,13 @@
 			<version>0.11.5</version>
 			<scope>runtime</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt-jackson</artifactId> <!-- o jjwt-gson si prefieres -->
+			<artifactId>jjwt-jackson</artifactId>
 			<version>0.11.5</version>
 			<scope>runtime</scope>
 		</dependency>
-    </dependencies>
+	</dependencies>
 
 	<build>
 		<plugins>
@@ -119,6 +110,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -132,16 +124,32 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.11</version>
+
+				<!-- ✅ Exclusiones globales: aplican a report, check y cualquier goal -->
+				<configuration>
+					<excludes>
+						<exclude>**/AuthServiceApplication.class</exclude>
+						<exclude>**/dto/**</exclude>
+						<exclude>**/config/**</exclude>
+						<exclude>**/web/ErrorResponse.class</exclude>
+					</excludes>
+				</configuration>
+
 				<executions>
+					<!-- 1. Instrumenta el agente antes de los tests -->
 					<execution>
+						<id>prepare-agent</id>
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
 					</execution>
+
+					<!-- 2. Genera el XML/HTML después de los tests -->
 					<execution>
 						<id>report</id>
 						<phase>test</phase>
@@ -149,39 +157,38 @@
 							<goal>report</goal>
 						</goals>
 					</execution>
+
+					<!-- 3. Verifica el umbral en la fase verify -->
+					<!-- ✅ Exclusiones repetidas aquí para que el check -->
+					<!-- evalúe exactamente las mismas clases que el report -->
 					<execution>
-					<id>check-coverage</id>
-					<phase>verify</phase>
-					<goals>
-						<goal>check</goal>
-					</goals>
-					<configuration>
-						<rules>
-							<rule>
-								<element>BUNDLE</element>
-								<limits>
-									<limit>
-										<counter>LINE</counter>
-										<value>COVEREDRATIO</value>
-										<minimum>0.80</minimum>
-									</limit>
-								</limits>
-							</rule>
-						</rules>
-					</configuration>
-				</execution>
+						<id>check-coverage</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<excludes>
+								<exclude>**/AuthServiceApplication.class</exclude>
+								<exclude>**/dto/**</exclude>
+								<exclude>**/config/**</exclude>
+								<exclude>**/web/ErrorResponse.class</exclude>
+							</excludes>
+							<rules>
+								<rule>
+									<element>BUNDLE</element>
+									<limits>
+										<limit>
+											<counter>LINE</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>0.80</minimum>
+										</limit>
+									</limits>
+								</rule>
+							</rules>
+						</configuration>
+					</execution>
 				</executions>
-				<configuration>
-					<includes>
-						<include>**/service/**</include>
-						<include>**/web/**</include>
-						<include>**/value/**</include>
-					</includes>
-					<excludes>
-						<exclude>**/web/dto/**</exclude>
-						<exclude>**/web/ErrorResponse.java</exclude>
-					</excludes>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
