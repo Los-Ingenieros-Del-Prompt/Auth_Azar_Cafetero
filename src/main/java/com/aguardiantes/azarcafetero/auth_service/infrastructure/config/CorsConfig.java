@@ -17,10 +17,7 @@ public class CorsConfig {
     public FilterRegistrationBean<CorsFilter> corsFilterRegistration() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true); 
-        config.setAllowedOrigins(List.of(
-                "http://localhost:3000",
-                "https://azarcafetero.vercel.app","https://azar-cafetero.duckdns.org"
-        ));
+        config.setAllowedOriginPatterns(List.of("*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setMaxAge(3600L);
