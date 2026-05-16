@@ -14,22 +14,31 @@ import java.util.List;
 public class CorsConfig {
 
     @Bean
-    public FilterRegistrationBean<CorsFilter> corsFilterRegistration() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true); 
-        config.setAllowedOrigins(List.of(
-                "http://localhost:3000",
-                "https://azarcafetero.vercel.app","https://azar-cafetero.duckdns.org"
-        ));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("*"));
-        config.setMaxAge(3600L);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-
-        FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(source));
-        bean.setOrder(Ordered.HIGHEST_PRECEDENCE); // corre ANTES que Spring Security
-        return bean;
-    }
+        public FilterRegistrationBean<CorsFilter> corsFilterRegistration() {
+            CorsConfiguration config = new CorsConfiguration();
+            config.setAllowCredentials(true);
+            config.setAllowedOrigins(List.of(
+                    "http://localhost:3000",
+                    "https://azarcafetero.vercel.app",
+                    "https://azar-cafetero.duckdns.org"
+            ));
+            config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+            config.setAllowedHeaders(List.of(           // ← reemplaza el "*"
+                    "Authorization",
+                    "Content-Type",
+                    "Accept",
+                    "Origin",
+                    "X-Requested-With",
+                    "Cookie"
+            ));
+            config.setExposedHeaders(List.of("Authorization"));
+            config.setMaxAge(3600L);
+        
+            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+            source.registerCorsConfiguration("/**", config);
+        
+            FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(source));
+            bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+            return bean;
+        }
 }
