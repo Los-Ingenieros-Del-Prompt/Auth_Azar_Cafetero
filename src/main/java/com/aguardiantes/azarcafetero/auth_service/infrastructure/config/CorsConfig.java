@@ -16,6 +16,7 @@ public class CorsConfig {
     @Bean
     public FilterRegistrationBean<CorsFilter> corsFilterRegistration() {
         CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true); 
         config.setAllowedOrigins(List.of(
                 "http://localhost:3000",
                 "https://azarcafetero.vercel.app","https://azar-cafetero.duckdns.org"
